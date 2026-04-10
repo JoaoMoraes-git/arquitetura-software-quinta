@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-public class Product implements Entityinterface{
+public class  Product implements Entityinterface{
     private UUID uuid;
     private String sku;
     private String name;
@@ -79,10 +79,16 @@ public class Product implements Entityinterface{
     public String toString() {
         return "Product{" +
                 "sku='" + sku + '\'' +
+                ", UUID=" + uuid + '\'' +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", datePrice=" + datePrice +
                 ", historicalPrice=" + historicalPrice +
                 '}';
+    }
+
+    @Override
+    public UUID getUUID() {
+        return null;
     }
 }

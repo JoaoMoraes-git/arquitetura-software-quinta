@@ -1,5 +1,7 @@
 package domain;
 
-public interface Entityinterface {
+import java.util.UUID;
 
+public interface Entityinterface {
+    public UUID getUUID();
 }
