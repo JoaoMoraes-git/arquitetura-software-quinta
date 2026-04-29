@@ -1,0 +1,23 @@
+void main() {
+    ProductService productService = new ProductService();
+
+
+    productService.create(new Product(
+            GenerateValue.uuid(),
+            "SKU",
+            "Name",
+            2f)
+    );
+
+    productService.create(new Product(
+            GenerateValue.uuid(),
+            "SKU",
+            "Name",
+            2f)
+    );
+
+    productService.listAll();
+
+
+
+}

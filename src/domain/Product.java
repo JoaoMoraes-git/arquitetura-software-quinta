@@ -15,13 +15,13 @@ public class  Product implements Entityinterface{
     public Product() {
     }
 
-    public Product(String sku, String name, float price) {
+    public Product(String sku, String name, Float price) {
         this.sku = sku;
         this.name = name;
         this.price = price;
     }
 
-    public Product(UUID uuid, String sku, String name, float price) {
+    public Product(UUID uuid, String sku, String name, Float price) {
         this.uuid = uuid;
         this.sku = sku;
         this.name = name;
@@ -44,11 +44,11 @@ public class  Product implements Entityinterface{
         this.name = name;
     }
 
-    public float getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Float price) {
         if (this.price != null && this.datePrice != null) {
             Price oldPrice = new Price(this.price, this.datePrice);
             historicalPrice.add(oldPrice);

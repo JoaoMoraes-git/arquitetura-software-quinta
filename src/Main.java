@@ -1,29 +1,26 @@
-import adapter.DatabaseStorage;
-import domain.Price;
 import domain.Product;
 import service.ProductService;
 import utils.GenerateValue;
 
-void main() {
-    ProductService productService = new ProductService();
+public class Main {
+    public static void main(String[] args) {
+        ProductService productService = new ProductService();
 
 
-    productService.create(new Product(
-            GenerateValue.uuid(),
-            "SKU",
-            "Name",
-            2f)
-    );
+        productService.create(new Product(
+                GenerateValue.uuid(),
+                "SKU",
+                "Name",
+                2f)
+        );
 
-    productService.create(new Product(
-            GenerateValue.uuid(),
-            "SKU",
-            "Name",
-            2f)
-    );
+        productService.create(new Product(
+                GenerateValue.uuid(),
+                "SKU",
+                "Name",
+                8f)
+        );
 
-    productService.listAll();
-
-
-
+        productService.listAll();
+    }
 }
