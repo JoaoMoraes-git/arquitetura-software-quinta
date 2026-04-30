@@ -1,39 +1,84 @@
 package adapter;
 
 import domain.EntityInterface;
+import domain.Product;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class DatabaseStorage implements PersistInterface {
-    private ArrayList<EntityInterface> db = new ArrayList<>();
+    private static final String PERSISTENCE_UNIT = "default";
+
+    private final EntityManagerFactory emf;
+
+    public DatabaseStorage() {
+        this.emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+    }
 
     @Override
     public void save(EntityInterface entity) {
-        db.add(entity);
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            if (entity.getUUID() != null
+                    && em.find(entity.getClass(), entity.getUUID()) != null) {
+                em.merge(entity);
+            } else {
+                em.persist(entity);
+            }
+            em.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public void delete(EntityInterface entity) {
-        db.remove(entity);
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            EntityInterface managed = em.find(entity.getClass(), entity.getUUID());
+            if (managed != null) em.remove(managed);
+            em.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public ArrayList<EntityInterface> listAll() {
-        return db;
+        EntityManager em = emf.createEntityManager();
+        try {
+            List<Product> result = em
+                    .createQuery("SELECT p FROM Product p", Product.class)
+                    .getResultList();
+            return new ArrayList<>(result);
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public EntityInterface findOneById(UUID id) {
-        //percorrer a lista (db) - correto
-        for (int i = 0; i < db.size(); i++) {
-            //Se ele encontrar algum elemento da lista que tenha o mesmo
-            //uuid, ele retorna esse elemento
-
-            if(db.get(i).getUUID().equals(id)) {
-                return db.get(i);
-            }
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.find(Product.class, id);
+        } finally {
+            em.close();
         }
-        return null;
+    }
+
+    public void close() {
+        if (emf != null && emf.isOpen()) emf.close();
     }
 }

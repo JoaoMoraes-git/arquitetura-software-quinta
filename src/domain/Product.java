@@ -1,16 +1,44 @@
 package domain;
 
-import java.math.BigDecimal;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.persistence.Transient;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
+@Entity
+@Table(name = "product")
 public class Product implements EntityInterface {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    @Column(name = "uuid", length = 36)
     private UUID uuid;
+
+    @Column(name = "sku", nullable = false)
     private String sku;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "price")
     private Float price;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_price")
     private Date datePrice;
+
+    @Transient
     private ArrayList<Price> historicalPrice = new ArrayList<>();
 
     public Product() {
