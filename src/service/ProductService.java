@@ -1,12 +1,10 @@
 package service;
 
 import adapter.DatabaseStorage;
-import adapter.PersistInterface;
-import domain.EntityInterface;
 import domain.Product;
-import java.util.ArrayList;
-import java.util.UUID;
 
 public class ProductService extends BaseService {
-    protected PersistInterface armazenamento = new DatabaseStorage<>(Product.class);
+    public ProductService() {
+        this.armazenamento = new DatabaseStorage<>(Product.class);
+    }
 }

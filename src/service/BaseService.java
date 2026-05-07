@@ -16,6 +16,14 @@ public abstract class BaseService implements ServiceInterface {
     }
 
     @Override
+    public void edit(EntityInterface entity) {
+        if (entity.getUUID() == null) {
+            throw new IllegalArgumentException("Cannot edit entity without UUID");
+        }
+        this.armazenamento.save(entity);
+    }
+
+    @Override
     public void delete(EntityInterface entity) {
         this.armazenamento.delete(entity);
     }
