@@ -20,6 +20,9 @@ public class Price implements EntityInterface {
     @Column(name = "price")
     private Float price;
 
+    @Column(name = "store_name")
+    private String storeName;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date")
     private Date date;
@@ -39,9 +42,10 @@ public class Price implements EntityInterface {
     public Price() {
     }
 
-    public Price(Float price, Date date) {
+    public Price(Float price, Date date, String storeName) {
         this.price = price;
         this.date = date;
+        this.storeName = storeName;
     }
 
     public Price(UUID uuid, Float price, Date date) {

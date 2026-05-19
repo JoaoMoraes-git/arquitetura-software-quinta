@@ -27,9 +27,16 @@ public class Product implements EntityInterface {
     @Column(name = "price")
     private Float price;
 
+    @Column(name = "store_name")
+    private String storeName;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_price")
     private Date datePrice;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "product_links", joinColumns = @JoinColumn(name = "product_id"))
+    private List<ProductLink> links = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "product",
@@ -74,14 +81,23 @@ public class Product implements EntityInterface {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public List<ProductLink> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<ProductLink> links) {
+        this.links = links;
+    }
+
+    public void setPrice(Float price, String storeName) {
         if (this.price != null && this.datePrice != null) {
-            Price oldPrice = new Price(this.price, this.datePrice);
+            Price oldPrice = new Price(this.price, this.datePrice, this.storeName);
             oldPrice.setProduct(this);
             historicalPrice.add(oldPrice);
         }
 
         this.price = price;
+        this.storeName = storeName;
         this.datePrice = new Date();
     }
 
